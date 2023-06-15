@@ -1,19 +1,19 @@
-package br.com.trier.springverspertino.models;
+package br.com.trier.springverspertino.models.dto;
 
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
-public class ResultadoDados {
+public class ApostaDto {
+    
     private List<Integer> valoresDados;
     private Integer soma;
     private Double porcentagem;
+    private String mensagem;
 
 }

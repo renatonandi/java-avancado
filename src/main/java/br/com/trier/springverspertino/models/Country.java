@@ -11,26 +11,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @EqualsAndHashCode(of = "id")
-@Entity(name = "usuario")
-public class User {
+@Entity(name = "pais")
+public class Country {
     
     @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
+    @Column(name = "id_pais")
     private Integer id;
     
-    @Column(name = "nome_usuario")
+    @Column(name = "nome_pais", unique = true)
     private String name;
-    
-    @Column(name = "email_usuario", unique = true)
-    private String email;
-    
-    @Column(name = "senha_usuario")
-    private String password;
-    
+
 }

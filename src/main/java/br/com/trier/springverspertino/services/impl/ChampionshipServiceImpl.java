@@ -28,8 +28,8 @@ public class ChampionshipServiceImpl implements ChampionshipService{
     public Championship insert(Championship championship) {
         Integer dataAtual = LocalDate.now().getYear();
         
-        if (championship.getYear() > dataAtual) {
-            throw new IllegalArgumentException("A data não pode ser maior que a data atual");
+        if (championship.getYear() < dataAtual) {
+            throw new IllegalArgumentException("A data não pode ser menor que a data atual");
         }
         return repository.save(championship);
     }

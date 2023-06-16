@@ -70,7 +70,7 @@ public class UserServiceTest extends BaseTest{
         assertEquals(1, usuario.getId());
         assertEquals("nome", usuario.getName());
         assertEquals("Email", usuario.getEmail());
-        assertEquals("senha", usuario.getPassword());
+        assertEquals("senha", usuario.getPassword()); 
     }
     
     @Test

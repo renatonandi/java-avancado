@@ -30,7 +30,7 @@ public class TeamResource {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Team> findById(Integer id){
+    public ResponseEntity<Team> findById(@PathVariable Integer id){
         Team team = service.findById(id);
         return team != null ? ResponseEntity.ok(team) : ResponseEntity.noContent().build();
     }
@@ -52,6 +52,11 @@ public class TeamResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/nome/{name}")
+    public ResponseEntity<List<Team>> findById(@PathVariable String name){
+        List<Team> list = service.findByTeam(name);
+        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
     }
     
 

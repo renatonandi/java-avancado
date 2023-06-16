@@ -12,6 +12,8 @@ public interface UserService {
     
     List<User> listAll();
     
+    List<User> findByName(String name);
+    
     User update(User user);
     
     void delete(Integer id);

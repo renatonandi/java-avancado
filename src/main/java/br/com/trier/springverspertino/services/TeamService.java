@@ -12,6 +12,8 @@ public interface TeamService {
     
     List<Team> listAll();
     
+    List<Team> findByTeam(String name);
+    
     Team update(Team team);
     
     void delete(Integer id);

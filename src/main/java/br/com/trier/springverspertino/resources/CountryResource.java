@@ -30,7 +30,7 @@ public class CountryResource {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Country> findById(Integer id){
+    public ResponseEntity<Country> findById(@PathVariable Integer id){
         Country country = service.findById(id);
         return country != null ? ResponseEntity.ok(country) : ResponseEntity.noContent().build();
     }
@@ -52,6 +52,12 @@ public class CountryResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/nome/{name}")
+    public ResponseEntity<List<Country>> findById(@PathVariable String name){
+        List<Country> list = service.findByCountry(name);
+        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
     }
     
 }

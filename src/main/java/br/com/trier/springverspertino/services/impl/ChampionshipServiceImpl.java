@@ -5,10 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.springverspertino.models.Championship;
+import br.com.trier.springverspertino.models.Country;
 import br.com.trier.springverspertino.repositories.ChampionshipRepository;
 import br.com.trier.springverspertino.services.ChampionshipService;
 
@@ -26,11 +27,11 @@ public class ChampionshipServiceImpl implements ChampionshipService{
 
     @Override
     public Championship insert(Championship championship) {
-        Integer dataAtual = LocalDate.now().getYear();
-        
-        if (championship.getYear() < dataAtual) {
-            throw new IllegalArgumentException("A data não pode ser menor que a data atual");
-        }
+//        Integer dataAtual = LocalDate.now().getYear();
+//        
+//        if (championship.getYear() < dataAtual) {
+//            throw new IllegalArgumentException("A data não pode ser menor que a data atual");
+//        }
         return repository.save(championship);
     }
 
@@ -50,7 +51,17 @@ public class ChampionshipServiceImpl implements ChampionshipService{
         if (champ != null) {
             repository.delete(champ);
         }
-        
     }
 
+    @Override
+    public List<Championship> findByYearAndDescription(Integer firstYear, Integer lastYear, String description) {
+        return repository.findByYearBetweenAndDescriptionContainingIgnoreCase(firstYear, lastYear, description);
+    }
+
+    @Override
+    public List<Championship> findByYear(Integer year) {
+        return repository.findByYear(year);
+    }
+
+   
 }

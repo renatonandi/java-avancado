@@ -19,6 +19,7 @@ import br.com.trier.springverspertino.services.ChampionshipService;
 @RestController
 @RequestMapping("/campeonato")
 public class ChampionshipResource {
+    
     @Autowired
     private ChampionshipService service;
     
@@ -29,7 +30,7 @@ public class ChampionshipResource {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Championship> findById(Integer id){
+    public ResponseEntity<Championship> findById(@PathVariable Integer id){
         Championship champ = service.findById(id);
         return champ != null ? ResponseEntity.ok(champ) : ResponseEntity.noContent().build();
     }
@@ -51,5 +52,17 @@ public class ChampionshipResource {
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
+    }
+    
+    @GetMapping("/ano/{firstYear}/{lastYear}/{description}")
+    public ResponseEntity<List<Championship>> findByYearAndDescription(@PathVariable Integer firstYear, @PathVariable Integer lastYear, @PathVariable String description){
+        List<Championship> list = service.findByYearAndDescription(firstYear, lastYear, description);
+        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/ano/{year}")
+    public ResponseEntity<List<Championship>> findByYear(@PathVariable Integer year){
+        List<Championship> list = service.findByYear(year);
+        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
     }
 }

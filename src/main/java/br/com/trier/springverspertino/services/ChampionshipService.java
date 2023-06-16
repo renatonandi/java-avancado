@@ -12,6 +12,10 @@ public interface ChampionshipService {
     
     List<Championship> listAll();
     
+    List<Championship> findByYear(Integer year);
+    
+    List<Championship> findByYearAndDescription(Integer firstYear, Integer lastYear, String description);
+    
     Championship update(Championship championship);
     
     void delete(Integer id);

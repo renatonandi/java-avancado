@@ -12,6 +12,8 @@ public interface CountryService {
     
     List<Country> listAll();
     
+    List<Country> findByCountry(String name);
+    
     Country update(Country country);
     
     void delete(Integer id);

@@ -55,7 +55,7 @@ public class CountryResource {
     }
     
     @GetMapping("/nome/{name}")
-    public ResponseEntity<List<Country>> findById(@PathVariable String name){
+    public ResponseEntity<List<Country>> findByName(@PathVariable String name){
         List<Country> list = service.findByCountry(name);
         return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
     }

@@ -17,7 +17,7 @@ import br.com.trier.springverspertino.models.Team;
 import br.com.trier.springverspertino.services.TeamService;
 
 @RestController
-@RequestMapping("/time")
+@RequestMapping("/equipe")
 public class TeamResource {
     
     @Autowired
@@ -54,7 +54,7 @@ public class TeamResource {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/nome/{name}")
-    public ResponseEntity<List<Team>> findById(@PathVariable String name){
+    public ResponseEntity<List<Team>> findByName(@PathVariable String name){
         List<Team> list = service.findByTeam(name);
         return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
     }

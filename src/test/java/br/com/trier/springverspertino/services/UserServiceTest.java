@@ -37,9 +37,8 @@ public class UserServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste buscar usuário por ID inexistente")
     @Sql({"classpath:/resources/sqls/usuario.sql"})
-    void findByIdWrongTest() {
-        var usuario = userService.findById(4);
-        assertNull(usuario);
+    void findByIdInvalidTest() {
+        assertNull(userService.findById(4));
     }
     
     @Test
@@ -56,14 +55,14 @@ public class UserServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste buscar usuario por nome errado")
     @Sql({"classpath:/resources/sqls/usuario.sql"})
-    void findByNameWrongTest() {
+    void findByNameInvalidTest() {
         var usuario = userService.findByName("c");
         assertEquals(0, usuario.size());
     }
     
     @Test
     @DisplayName("Teste inserir usuario")
-    void insertUserTes() {
+    void insertUserTest() {
         User usuario = new User(null, "nome", "Email", "senha");
         userService.insert(usuario);
         usuario = userService.findById(1);

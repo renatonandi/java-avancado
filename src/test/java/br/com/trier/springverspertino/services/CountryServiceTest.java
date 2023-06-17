@@ -55,7 +55,7 @@ public class CountryServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Update equipe")
+	@DisplayName("Update país")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
 	void updateTest() {	
 		Country pais = countryService.findById(1);
@@ -72,7 +72,7 @@ public class CountryServiceTest extends BaseTest{
 	@Test
 	@DisplayName("Delete país")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
-	void deleteTeamTest() {	
+	void deleteTest() {	
 		assertEquals(3, countryService.listAll().size());
 		countryService.delete(1);
 		assertEquals(2, countryService.listAll().size());
@@ -82,7 +82,7 @@ public class CountryServiceTest extends BaseTest{
 	@Test
 	@DisplayName("Delete país que não existe")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
-	void deleteTeamNoExistTest() {	
+	void deleteIdNoExistTest() {	
 		assertEquals(3, countryService.listAll().size());
 		countryService.delete(10);
 		assertEquals(3, countryService.listAll().size());
@@ -91,7 +91,7 @@ public class CountryServiceTest extends BaseTest{
 	@Test
 	@DisplayName("Procura por nome")
 	@Sql({"classpath:/resources/sqls/pais.sql"})
-	void findByTeamTest() {	
+	void findByCountryTest() {	
 		assertEquals(1, countryService.findByCountry("b").size());
 		assertEquals(1, countryService.findByCountry("it").size());
 		assertEquals(1, countryService.findByCountry("e").size());

@@ -72,7 +72,7 @@ public class TeamServiceTest extends BaseTest{
 	@Test
 	@DisplayName("Delete equipe")
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void deleteTeamTest() {	
+	void deleteTest() {	
 		assertEquals(3, teamService.listAll().size());
 		teamService.delete(1);
 		assertEquals(2, teamService.listAll().size());
@@ -82,7 +82,7 @@ public class TeamServiceTest extends BaseTest{
 	@Test
 	@DisplayName("Delete equipe que não existe")
 	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void deleteTeamNoExistTest() {	
+	void deleteIdNoExistTest() {	
 		assertEquals(3, teamService.listAll().size());
 		teamService.delete(10);
 		assertEquals(3, teamService.listAll().size());

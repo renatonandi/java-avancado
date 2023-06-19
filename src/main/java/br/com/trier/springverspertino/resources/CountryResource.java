@@ -25,27 +25,23 @@ public class CountryResource {
     
     @PostMapping
     public ResponseEntity<Country> insert(@RequestBody Country country){
-        Country newCountry = service.insert(country);
-        return newCountry != null ? ResponseEntity.ok(newCountry) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.insert(country));
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<Country> findById(@PathVariable Integer id){
-        Country country = service.findById(id);
-        return country != null ? ResponseEntity.ok(country) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Country>> listAll(){
-        List<Country> list = service.listAll();
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.listAll());
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Country> update(@PathVariable Integer id, @RequestBody Country country){
         country.setId(id);
-        country = service.update(country);
-        return country != null ? ResponseEntity.ok(country) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.update(country));
     }
     
     @DeleteMapping("/{id}")
@@ -56,8 +52,7 @@ public class CountryResource {
     
     @GetMapping("/nome/{name}")
     public ResponseEntity<List<Country>> findByName(@PathVariable String name){
-        List<Country> list = service.findByCountry(name);
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findByCountry(name));
     }
     
 }

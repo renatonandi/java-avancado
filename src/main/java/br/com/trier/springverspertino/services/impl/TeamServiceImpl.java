@@ -58,7 +58,7 @@ public class TeamServiceImpl implements TeamService{
     public List<Team> findByTeam(String name) {
         List<Team> list = repository.findByNameContainingIgnoreCase(name);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nemn uma equipe encontrada");
+            throw new ObjectNotFound("Nem uma equipe encontrada");
         }
         return list;
     }

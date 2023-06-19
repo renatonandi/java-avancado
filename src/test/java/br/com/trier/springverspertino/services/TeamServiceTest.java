@@ -74,7 +74,7 @@ public class TeamServiceTest extends BaseTest{
     @Sql({"classpath:/resources/sqls/equipe.sql"})
     void findByNameInvalidTest() {
         var exception = assertThrows(ObjectNotFound.class, () -> teamService.findByTeam("z"));
-        assertEquals("Nemn uma equipe encontrada", exception.getMessage());
+        assertEquals("Nem uma equipe encontrada", exception.getMessage());
         
     }
     
@@ -137,12 +137,5 @@ public class TeamServiceTest extends BaseTest{
         
        
     }
-	
-	
-	
-	
-	
-	
-	
 
 }

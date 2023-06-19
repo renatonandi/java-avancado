@@ -3,6 +3,9 @@ package br.com.trier.springverspertino.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.springverspertino.BaseTest;
 import br.com.trier.springverspertino.models.Team;
+import br.com.trier.springverspertino.models.User;
+import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;
+import br.com.trier.springverspertino.services.exceptions.ObjectNotFound;
 import jakarta.transaction.Transactional;
 
 @Transactional
@@ -20,82 +26,122 @@ public class TeamServiceTest extends BaseTest{
 	TeamService teamService;
 	
 	@Test
-	@DisplayName("Buscar por id")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void findByIdTest() {
-		Team equipe = teamService.findById(1);
-		assertNotNull(equipe);
-		assertEquals(1, equipe.getId());
-		assertEquals("Ferrari", equipe.getName());
-		
-	}
+    @DisplayName("Teste de listagem de todos os registros")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void listAllTest() {
+        var team = teamService.listAll();
+        assertNotNull(team);
+        assertEquals(3, team.size());
+    }
+
+    @Test
+    @DisplayName("Teste de listagem de todos os registros sem nem um cadastrado")
+    void listAllNonExistsTest() {
+        var exception = assertThrows(ObjectNotFound.class, () -> teamService.listAll());
+        assertEquals("Nem uma equipe cadastrada", exception.getMessage());
+    }
+    
+    @Test
+    @DisplayName("Teste buscar por equipe por ID")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void findByIdTest() {
+        var team = teamService.findById(1);
+        assertNotNull(team);
+        assertEquals(1, team.getId());
+        assertEquals("Ferrari", team.getName());
+    }
+    
+    @Test
+    @DisplayName("Teste buscar equipe por ID inexistente")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void findByIdInvalidTest() {
+        var exception = assertThrows(ObjectNotFound.class, () -> teamService.findById(4));
+        assertEquals("A equipe 4 não existe", exception.getMessage());
+    }
+    
+    @Test
+    @DisplayName("Teste buscar equipe por nome")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void findByNameTest() {
+        var team = teamService.findByTeam("fe");
+        assertNotNull(team);
+        assertEquals(1, team.size());
+       
+    }
+    
+    @Test
+    @DisplayName("Teste buscar equipe por nome errado")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void findByNameInvalidTest() {
+        var exception = assertThrows(ObjectNotFound.class, () -> teamService.findByTeam("z"));
+        assertEquals("Nemn uma equipe encontrada", exception.getMessage());
+        
+    }
+    
+    @Test
+    @DisplayName("Teste inserir equipe")
+    void insertUserTest() {
+        Team team = new Team(null, "equipe");
+        teamService.insert(team);
+        team = teamService.findById(1);
+        assertEquals(1, team.getId());
+        assertEquals("equipe", team.getName());
+    }
+    
+    @Test
+    @DisplayName("Teste apagar equipe por id")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void deleteByIdTest() {
+        teamService.delete(1);
+        List<Team> list = teamService.listAll();
+        assertEquals(2, list.size());
+    }
+    
+    @Test
+    @DisplayName("Teste apagar equipe por id incorreto")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void deleteByIdNonExistsTest() {
+        var exception = assertThrows(ObjectNotFound.class, () -> teamService.delete(4));
+        assertEquals("A equipe 4 não existe", exception.getMessage());
+    }
+    
+    @Test
+    @DisplayName("Teste alterar equipe")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void updateByIdTest() {
+        var team = teamService.findById(1);
+        assertEquals("Ferrari", team.getName());
+        Team teamAlter = new Team(1, "nomeAlterado");
+        teamService.update(teamAlter);
+        teamAlter = teamService.findById(1);
+        assertEquals("nomeAlterado", teamAlter.getName());
+    }
+
+    @Test
+    @DisplayName("Teste alterar equipe inexistente")
+    void updateByIdNonExistsTest() {
+        
+        Team teamAlter = new Team(1, "nomeAlterado");
+        var exception = assertThrows(ObjectNotFound.class, () -> teamService.update(teamAlter));
+        assertEquals("A equipe 1 não existe", exception.getMessage());
+        
+    }
+    
+    @Test
+    @DisplayName("Teste inserir equipe com nome duplicado")
+    @Sql({"classpath:/resources/sqls/equipe.sql"})
+    void insertUserEmailExistTest() {
+        Team team = new Team(null, "Ferrari");
+        var exception = assertThrows(IntegrityViolation.class, () -> teamService.insert(team));
+        assertEquals("Essa equipe já está cadastrada", exception.getMessage());
+        
+       
+    }
 	
-	@Test
-	@DisplayName("Buscar por id inválido")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void findByIdInvalidTest() {	
-		assertNull(teamService.findById(4));
-	}
 	
-	@Test
-	@DisplayName("Buscar todos")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void listAllTest() {	
-		assertEquals(3, teamService.listAll().size());
-	}
 	
-	@Test
-	@DisplayName("Insert nova equipe")
-	void insertTest() {	
-		Team equipe = new Team(null, "EquipeNova");
-		teamService.insert(equipe);
-		assertEquals(1, teamService.listAll().size());
-		assertEquals(1, equipe.getId());
-		assertEquals("EquipeNova", equipe.getName());	
-	}
 	
-	@Test
-	@DisplayName("Update equipe")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void updateTest() {	
-		Team equipe = teamService.findById(1);
-		assertNotNull(equipe);
-		assertEquals(1, equipe.getId());
-		assertEquals("Ferrari", equipe.getName());	
-		equipe = new Team(1, "FerrariNova");
-		teamService.update(equipe);
-		assertEquals(3, teamService.listAll().size());
-		assertEquals(1, equipe.getId());
-		assertEquals("FerrariNova", equipe.getName());	
-	}
 	
-	@Test
-	@DisplayName("Delete equipe")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void deleteTest() {	
-		assertEquals(3, teamService.listAll().size());
-		teamService.delete(1);
-		assertEquals(2, teamService.listAll().size());
-		assertEquals(2, teamService.listAll().get(0).getId());
-	}
-	
-	@Test
-	@DisplayName("Delete equipe que não existe")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void deleteIdNoExistTest() {	
-		assertEquals(3, teamService.listAll().size());
-		teamService.delete(10);
-		assertEquals(3, teamService.listAll().size());
-	}
-	
-	@Test
-	@DisplayName("Procura por nome")
-	@Sql({"classpath:/resources/sqls/equipe.sql"})
-	void findByTeamTest() {	
-		assertEquals(1, teamService.findByTeam("f").size());
-		assertEquals(1, teamService.findByTeam("m").size());
-		assertEquals(2, teamService.findByTeam("r").size());
-	}
 	
 	
 

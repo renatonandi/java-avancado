@@ -31,21 +31,18 @@ public class ChampionshipResource {
     
     @GetMapping("/{id}")
     public ResponseEntity<Championship> findById(@PathVariable Integer id){
-        Championship champ = service.findById(id);
-        return champ != null ? ResponseEntity.ok(champ) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Championship>> listAll(){
-        List<Championship> list = service.listAll();
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.listAll());
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Championship> update(@PathVariable Integer id, @RequestBody Championship champ){
         champ.setId(id);
-        champ = service.update(champ);
-        return champ != null ? ResponseEntity.ok(champ) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.update(champ));
     }
     
     @DeleteMapping("/{id}")
@@ -56,13 +53,11 @@ public class ChampionshipResource {
     
     @GetMapping("/ano/{firstYear}/{lastYear}/{description}")
     public ResponseEntity<List<Championship>> findByYearAndDescription(@PathVariable Integer firstYear, @PathVariable Integer lastYear, @PathVariable String description){
-        List<Championship> list = service.findByYearAndDescription(firstYear, lastYear, description);
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findByYearAndDescription(firstYear, lastYear, description));
     }
     
     @GetMapping("/ano/{year}")
     public ResponseEntity<List<Championship>> findByYear(@PathVariable Integer year){
-        List<Championship> list = service.findByYear(year);
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findByYear(year));
     }
 }

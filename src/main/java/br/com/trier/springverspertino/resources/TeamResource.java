@@ -25,27 +25,23 @@ public class TeamResource {
     
     @PostMapping
     public ResponseEntity<Team> insert(@RequestBody Team team){
-        Team newTeam = service.insert(team);
-        return newTeam != null ? ResponseEntity.ok(newTeam) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.insert(team));
     }
     
     @GetMapping("/{id}")
     public ResponseEntity<Team> findById(@PathVariable Integer id){
-        Team team = service.findById(id);
-        return team != null ? ResponseEntity.ok(team) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Team>> listAll(){
-        List<Team> list = service.listAll();
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.listAll());
     }
     
     @PutMapping("/{id}")
     public ResponseEntity<Team> update(@PathVariable Integer id, @RequestBody Team team){
         team.setId(id);
-        team = service.update(team);
-        return team != null ? ResponseEntity.ok(team) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.update(team));
     }
     
     @DeleteMapping("/{id}")
@@ -55,8 +51,7 @@ public class TeamResource {
     }
     @GetMapping("/nome/{name}")
     public ResponseEntity<List<Team>> findByName(@PathVariable String name){
-        List<Team> list = service.findByTeam(name);
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findByTeam(name));
     }
     
 

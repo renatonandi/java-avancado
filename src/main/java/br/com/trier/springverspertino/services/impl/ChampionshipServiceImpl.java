@@ -12,6 +12,8 @@ import br.com.trier.springverspertino.models.Championship;
 import br.com.trier.springverspertino.models.Country;
 import br.com.trier.springverspertino.repositories.ChampionshipRepository;
 import br.com.trier.springverspertino.services.ChampionshipService;
+import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;
+import br.com.trier.springverspertino.services.exceptions.ObjectNotFound;
 
 @Service
 public class ChampionshipServiceImpl implements ChampionshipService{
@@ -22,26 +24,28 @@ public class ChampionshipServiceImpl implements ChampionshipService{
     @Override
     public Championship findById(Integer id) {
         Optional<Championship> champ = repository.findById(id);
-        return champ.orElse(null);
+        return champ.orElseThrow(() -> new ObjectNotFound("O campeonato %s não existe".formatted(id)));
     }
 
     @Override
     public Championship insert(Championship championship) {
-//        Integer dataAtual = LocalDate.now().getYear();
-//        
-//        if (championship.getYear() < dataAtual) {
-//            throw new IllegalArgumentException("A data não pode ser menor que a data atual");
-//        }
+        validateYear(championship.getYear());
         return repository.save(championship);
     }
 
     @Override
     public List<Championship> listAll() {
-        return repository.findAll();
+        List<Championship> list = repository.findAll();
+        if (list.isEmpty()) {
+            throw new ObjectNotFound("Nem um campeonato cadastrado");
+        }
+        return list;
     }
 
     @Override
     public Championship update(Championship championship) {
+        findById(championship.getId());
+        validateYear(championship.getYear());
         return repository.save(championship);
     }
 
@@ -55,12 +59,33 @@ public class ChampionshipServiceImpl implements ChampionshipService{
 
     @Override
     public List<Championship> findByYearAndDescription(Integer firstYear, Integer lastYear, String description) {
-        return repository.findByYearBetweenAndDescriptionContainingIgnoreCase(firstYear, lastYear, description);
+        validateYear(firstYear);
+        validateYear(lastYear);
+        List<Championship> list = repository.findByYearBetweenAndDescriptionContainingIgnoreCase(firstYear, lastYear, description);
+        
+        if (list.isEmpty()) {
+            throw new ObjectNotFound("Nem um campeonato encontrado");
+        }
+        return list;
     }
 
     @Override
     public List<Championship> findByYear(Integer year) {
-        return repository.findByYear(year);
+        validateYear(year);
+        List<Championship> list = repository.findByYear(year);
+        if (list.isEmpty()) {
+            throw new ObjectNotFound("Nem um campeonato com esse ano cadastrado");
+        }
+        return list;
+    }
+
+    
+    private void validateYear(Integer year) {
+        Integer dataAtual = LocalDate.now().getYear();
+        if (year < 1990 || year > dataAtual + 1) {
+            throw new IntegrityViolation("Ano inválido. O ano não pode ser menos que 1990 e mais que o próximo ano");
+        }
+        
     }
 
    

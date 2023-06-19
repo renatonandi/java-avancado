@@ -31,22 +31,19 @@ public class UserResource {
     
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Integer id){
-        User user = service.findById(id);
-        return user!=null ? ResponseEntity.ok(user) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findById(id));
     }
     
     @GetMapping
     public ResponseEntity<List<User>> listAll(){
-        List<User> list = service.listAll();
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.listAll());
     }
     
     
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody User user){
         user.setId(id);
-        user = service.update(user);
-        return user!=null ? ResponseEntity.ok(user) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.update(user));
     }
     
     @DeleteMapping("/{id}")
@@ -57,8 +54,7 @@ public class UserResource {
     
     @GetMapping("/name/{name}")
     public ResponseEntity<List<User>> findByName(@PathVariable String name){
-        List<User> list = service.findByName(name);
-        return list.size() > 0 ? ResponseEntity.ok(list) : ResponseEntity.noContent().build();
+        return ResponseEntity.ok(service.findByName(name));
     }
     
     

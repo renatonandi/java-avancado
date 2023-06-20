@@ -50,7 +50,7 @@ public class CountryResource {
         return ResponseEntity.ok().build();
     }
     
-    @GetMapping("/nome/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<List<Country>> findByName(@PathVariable String name){
         return ResponseEntity.ok(service.findByCountry(name));
     }

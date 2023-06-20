@@ -1,5 +1,6 @@
 package br.com.trier.springverspertino.models;
 
+import br.com.trier.springverspertino.models.dto.UserDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,5 +33,14 @@ public class User {
     
     @Column(name = "senha_usuario")
     private String password;
+    
+    
+    public User(UserDTO dto) {
+        this(dto.getId(), dto.getName(), dto.getEmail(), dto.getPassword());
+    }
+    
+    public UserDTO toDTO() {
+        return new UserDTO(id, name, email, password);
+    }
     
 }

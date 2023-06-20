@@ -69,6 +69,14 @@ public class ChampionshipServiceTest extends BaseTest{
 		assertEquals(1, champ.getId());
 		assertEquals("Campeonato", champ.getDescription());	
 	}
+
+	@Test
+	@DisplayName("Insert novo campeonato com ano nulo")
+	void insertNullYearTest() {	
+	    Championship champ = new Championship(null, "Campeonato", null);
+	    var exception = assertThrows(IntegrityViolation.class, () -> champService.insert(champ));
+        assertEquals("Ano inválido. O ano não pode ser nulo", exception.getMessage());
+	}
 	
 	@Test
 	@DisplayName("Update campeonato")

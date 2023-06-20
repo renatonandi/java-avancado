@@ -81,8 +81,10 @@ public class ChampionshipServiceImpl implements ChampionshipService{
 
     
     private void validateYear(Integer year) {
-        Integer dataAtual = LocalDate.now().getYear();
-        if (year < 1990 || year > dataAtual + 1) {
+        if (year == null) {
+            throw new IntegrityViolation("Ano inválido. O ano não pode ser nulo");
+        }
+        if (year < 1990 || year > LocalDate.now().getYear() + 1) {
             throw new IntegrityViolation("Ano inválido. O ano não pode ser menos que 1990 e mais que o próximo ano");
         }
         

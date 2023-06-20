@@ -49,7 +49,7 @@ public class TeamResource {
         service.delete(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/nome/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<List<Team>> findByName(@PathVariable String name){
         return ResponseEntity.ok(service.findByTeam(name));
     }

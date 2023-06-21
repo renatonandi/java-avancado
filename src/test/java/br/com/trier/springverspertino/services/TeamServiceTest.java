@@ -2,7 +2,6 @@ package br.com.trier.springverspertino.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.springverspertino.BaseTest;
 import br.com.trier.springverspertino.models.Team;
-import br.com.trier.springverspertino.models.User;
 import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;
 import br.com.trier.springverspertino.services.exceptions.ObjectNotFound;
 import jakarta.transaction.Transactional;

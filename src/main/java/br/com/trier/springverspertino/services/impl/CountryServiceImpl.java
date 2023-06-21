@@ -4,11 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.springverspertino.models.Country;
-import br.com.trier.springverspertino.models.User;
 import br.com.trier.springverspertino.repositories.CountryRepository;
 import br.com.trier.springverspertino.services.CountryService;
 import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;

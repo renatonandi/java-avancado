@@ -37,7 +37,6 @@ public class UserResourceTest {
         return rest.getForEntity(url, UserDTO.class);
     }
 
-    @SuppressWarnings("unused")
     private ResponseEntity<List<UserDTO>> getUsers(String url) {
         return rest.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<UserDTO>>() {
         });
@@ -59,7 +58,6 @@ public class UserResourceTest {
     public void testListAllEmptyTest() {
         ResponseEntity<StandardError> response = rest.getForEntity("/usuarios", StandardError.class);
         assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
-        
     }
     
     @Test
@@ -100,6 +98,24 @@ public class UserResourceTest {
         UserDTO user = responseEntity.getBody();
         assertEquals("nome", user.getName());
     }
+    
+    @Test
+    @DisplayName("Cadastrar usuário com email existente")
+    @Sql({"classpath:/resources/sqls/limpa_tabelas.sql"})
+    @Sql({"classpath:/resources/sqls/usuario.sql"})
+    public void testCreateUserEmailExists() {
+        UserDTO dto = new UserDTO(null, "nome", "email1@gmail.com", "senha");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<UserDTO> requestEntity = new HttpEntity<>(dto, headers);
+        ResponseEntity<UserDTO> responseEntity = rest.exchange(
+                "/usuarios", 
+                HttpMethod.POST,  
+                requestEntity,    
+                UserDTO.class   
+        );
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+    }
 
     @Test
     @DisplayName("Alterar usuário")
@@ -120,6 +136,24 @@ public class UserResourceTest {
         UserDTO user = responseEntity.getBody();
         assertEquals("nomeNovo", user.getName());
     }
+
+    @Test
+    @DisplayName("Alterar usuário com email existente")
+    @Sql({"classpath:/resources/sqls/limpa_tabelas.sql"})
+    @Sql({"classpath:/resources/sqls/usuario.sql"})
+    public void testUpdateUserEmailExist() {
+    	UserDTO dto = new UserDTO(1, "nomeNovo", "email2@gmail.com", "senhaNova");
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.APPLICATION_JSON);
+    	HttpEntity<UserDTO> requestEntity = new HttpEntity<>(dto, headers);
+    	ResponseEntity<UserDTO> responseEntity = rest.exchange(
+    			"/usuarios/1", 
+    			HttpMethod.PUT,  
+    			requestEntity,    
+    			UserDTO.class   
+    			);
+    	assertEquals(responseEntity.getStatusCode(), HttpStatus.BAD_REQUEST);
+    }
     
     @Test
     @DisplayName("Alterar usuário inexistente")
@@ -137,7 +171,6 @@ public class UserResourceTest {
                 UserDTO.class   
                 );
         assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
-        
     }
 
     @Test
@@ -152,7 +185,6 @@ public class UserResourceTest {
                 UserDTO.class   
                 );
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-       
     }
     
     @Test
@@ -167,7 +199,6 @@ public class UserResourceTest {
                 UserDTO.class   
                 );
         assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
-        
     }
     
     @Test
@@ -178,7 +209,6 @@ public class UserResourceTest {
         ResponseEntity<List<UserDTO>> response = getUsers("/usuarios/name/us");
         assertEquals(response.getStatusCode(), HttpStatus.OK);
         assertEquals(3, response.getBody().size());
-        
     }
 
     @Test
@@ -188,9 +218,6 @@ public class UserResourceTest {
     public void testFindByNameNonExistUser() {
         ResponseEntity<StandardError> response = rest.getForEntity("/usuarios/name/z", StandardError.class);
         assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
-        
     }
-    
-
 
 }

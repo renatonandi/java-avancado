@@ -20,13 +20,13 @@ public class SpeedwayServiceImpl implements SpeedwayService{
     
     private void validateSpeedway(Speedway speedway) {
         if (speedway.getSize() == null || speedway.getSize() <= 0) {
-            throw new IntegrityViolation("Tamanho da pista inválido");
+            throw new IntegrityViolation("Tamanho da pista inválido.");
         }
     }
 
     @Override
     public Speedway findById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new ObjectNotFound("A pista %s não existe".formatted(id)));
+        return repository.findById(id).orElseThrow(() -> new ObjectNotFound("A pista %s não existe.".formatted(id)));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SpeedwayServiceImpl implements SpeedwayService{
     public List<Speedway> listAll() {
         List<Speedway> list = repository.findAll();
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma pista cadastrada");
+            throw new ObjectNotFound("Nenhuma pista cadastrada.");
         }
         return list;
     }
@@ -61,7 +61,7 @@ public class SpeedwayServiceImpl implements SpeedwayService{
     public List<Speedway> findByNameStartsWithIgnoreCase(String name) {
         List<Speedway> list = repository.findByNameStartsWithIgnoreCase(name);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma pista encontrada");
+            throw new ObjectNotFound("Nenhuma pista encontrada.");
         }
         return list;
     }
@@ -70,7 +70,7 @@ public class SpeedwayServiceImpl implements SpeedwayService{
     public List<Speedway> findBySizeBetween(Integer sizeIn, Integer sizeFin) {
         List<Speedway> list = repository.findBySizeBetween(sizeIn, sizeFin);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma pista encontrada com essas medidas");
+            throw new ObjectNotFound("Nenhuma pista encontrada com essas medidas.");
         }
         return list;
     }
@@ -79,7 +79,7 @@ public class SpeedwayServiceImpl implements SpeedwayService{
     public List<Speedway> findByCountryOrderBySize(Country country) {
         List<Speedway> list = repository.findByCountryOrderBySize(country);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nenhuma pista encontrada para esse país: %s".formatted(country.getName()));
+            throw new ObjectNotFound("Nenhuma pista encontrada para esse país: %s.".formatted(country.getName()));
         }
         return list;
     }

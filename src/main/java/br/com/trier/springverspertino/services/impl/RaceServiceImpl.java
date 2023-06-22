@@ -20,9 +20,10 @@ public class RaceServiceImpl implements RaceService{
     @Autowired
     private RaceRepository repository;
     
+    
     public void validateDate(Race race) {
-        if (race.getDate() == null) {
-            throw new IntegrityViolation("A data não pode ser nula");
+        if (race.getChampionship() == null) {
+            throw new IntegrityViolation("O campeonato não pode ser nulo");
         }
         if (race.getChampionship().getYear() != race.getDate().getYear()) {
             throw new IntegrityViolation("A data difere da data do campeonato");

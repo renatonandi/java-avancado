@@ -148,8 +148,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/pais.sql" })
 	void testFindByPaisOrderBySizeDescNoPistasCadastradas() {
-		assertThrows(ObjectNotFound.class,
-				() -> speedwayService.findByCountryOrderBySize(countryService.findById(1)));
+		assertThrows(ObjectNotFound.class, () -> speedwayService.findByCountryOrderBySize(countryService.findById(1)));
 	}
 
 	@Test

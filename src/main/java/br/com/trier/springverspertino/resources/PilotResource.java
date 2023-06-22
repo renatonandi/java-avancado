@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.trier.springverspertino.models.Pilot;
+import br.com.trier.springverspertino.models.dto.PilotDTO;
 import br.com.trier.springverspertino.services.CountryService;
 import br.com.trier.springverspertino.services.PilotService;
 import br.com.trier.springverspertino.services.TeamService;
@@ -32,28 +33,28 @@ public class PilotResource {
     private CountryService countryService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<Pilot> findById(@PathVariable Integer id){
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<PilotDTO> findById(@PathVariable Integer id){
+        return ResponseEntity.ok(service.findById(id).toDTO());
     }
 
     @PostMapping
-    public ResponseEntity<Pilot> insert(@RequestBody Pilot pilot){
-        countryService.findById(pilot.getCountry().getId());
-        teamService.findById(pilot.getTeam().getId());
-        return ResponseEntity.ok(service.insert(pilot));
+    public ResponseEntity<PilotDTO> insert(@RequestBody PilotDTO pilotDTO){
+        return ResponseEntity.ok(service.insert(new Pilot(
+                pilotDTO, countryService.findById(pilotDTO.getCountryId()),
+                teamService.findById(pilotDTO.getTeamId()))).toDTO());
     }
 
     @GetMapping
-    public ResponseEntity<List<Pilot>> listAll(){
-        return ResponseEntity.ok(service.listAll());
+    public ResponseEntity<List<PilotDTO>> listAll(){
+        return ResponseEntity.ok(service.listAll().stream().map((pilot -> pilot.toDTO())).toList());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pilot> update(@PathVariable Integer id, @RequestBody Pilot pilot){
+    public ResponseEntity<PilotDTO> update(@PathVariable Integer id, @RequestBody PilotDTO pilotDTO){
+        
+        Pilot pilot = new Pilot(pilotDTO, countryService.findById(pilotDTO.getId()), teamService.findById(pilotDTO.getId()));
         pilot.setId(id);
-        countryService.findById(pilot.getCountry().getId());
-        teamService.findById(pilot.getTeam().getId());
-        return ResponseEntity.ok(service.update(pilot));
+        return ResponseEntity.ok(service.update(pilot).toDTO());
     }
 
     @DeleteMapping("/{id}")

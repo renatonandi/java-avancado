@@ -65,7 +65,7 @@ public class RacePilotResource {
         return ResponseEntity.ok().build();
     }
     
-    @GetMapping("/placement/{placement}")
+    @GetMapping("/placing/{placing}")
     public ResponseEntity<List<RacePilotDTO>> findByPlacement(@PathVariable Integer placing){
         return ResponseEntity.ok(service.findByPlacing(placing)
                 .stream()

@@ -1,6 +1,5 @@
 package br.com.trier.springverspertino.repositories;
 
-import java.sql.Date;
 import java.time.ZonedDateTime;
 import java.util.List;
 

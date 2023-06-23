@@ -78,7 +78,7 @@ public class TeamServiceTest extends BaseTest{
     
     @Test
     @DisplayName("Teste inserir equipe")
-    void insertUserTest() {
+    void insertTeamTest() {
         Team team = new Team(null, "equipe");
         teamService.insert(team);
         team = teamService.findById(1);
@@ -89,7 +89,7 @@ public class TeamServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste apagar equipe por id")
     @Sql({"classpath:/resources/sqls/equipe.sql"})
-    void deleteByIdTest() {
+    void deleteTeamByIdTest() {
         teamService.delete(1);
         List<Team> list = teamService.listAll();
         assertEquals(2, list.size());
@@ -98,7 +98,7 @@ public class TeamServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste apagar equipe por id incorreto")
     @Sql({"classpath:/resources/sqls/equipe.sql"})
-    void deleteByIdNonExistsTest() {
+    void deleteTeamByIdNonExistsTest() {
         var exception = assertThrows(ObjectNotFound.class, () -> teamService.delete(4));
         assertEquals("A equipe 4 não existe", exception.getMessage());
     }
@@ -106,7 +106,7 @@ public class TeamServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste alterar equipe")
     @Sql({"classpath:/resources/sqls/equipe.sql"})
-    void updateByIdTest() {
+    void updateTeamByIdTest() {
         var team = teamService.findById(1);
         assertEquals("Ferrari", team.getName());
         Team teamAlter = new Team(1, "nomeAlterado");
@@ -117,7 +117,7 @@ public class TeamServiceTest extends BaseTest{
 
     @Test
     @DisplayName("Teste alterar equipe inexistente")
-    void updateByIdNonExistsTest() {
+    void updateTeamByIdNonExistsTest() {
         
         Team teamAlter = new Team(1, "nomeAlterado");
         var exception = assertThrows(ObjectNotFound.class, () -> teamService.update(teamAlter));
@@ -128,12 +128,10 @@ public class TeamServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste inserir equipe com nome duplicado")
     @Sql({"classpath:/resources/sqls/equipe.sql"})
-    void insertUserEmailExistTest() {
+    void insertTeamWithDuplicatedNameTest() {
         Team team = new Team(null, "Ferrari");
         var exception = assertThrows(IntegrityViolation.class, () -> teamService.insert(team));
         assertEquals("Essa equipe já está cadastrada", exception.getMessage());
-        
-       
     }
 
 }

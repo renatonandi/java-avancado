@@ -23,7 +23,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.springverspertino.SpringVerspertinoApplication;
 import br.com.trier.springverspertino.models.Championship;
-import br.com.trier.springverspertino.models.Country;
 import br.com.trier.springverspertino.resources.exceptions.StandardError;
 
 @ActiveProfiles("test")

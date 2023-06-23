@@ -1,6 +1,5 @@
 package br.com.trier.springverspertino.services;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import br.com.trier.springverspertino.models.Championship;

@@ -20,7 +20,7 @@ public class RacePilotServiceImpl implements RacePilotService{
     
     @Override
     public RacePilot findById(Integer id) {
-        return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Piloto Corrida %s não existe".formatted(id)));
+        return repository.findById(id).orElseThrow(() -> new ObjectNotFound("Piloto para a corrida %s não existe".formatted(id)));
     }
 
     @Override
@@ -32,9 +32,9 @@ public class RacePilotServiceImpl implements RacePilotService{
     public List<RacePilot> listAll() {
         List<RacePilot> list = repository.findAll();
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nenhum piloto corrida encontrada");
+            throw new ObjectNotFound("Nenhum piloto/corrida encontrada");
         }
-        return null;
+        return list;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RacePilotServiceImpl implements RacePilotService{
     public List<RacePilot> findByPilotOrderByPlacing(Pilot pilot) {
         List<RacePilot> list = repository.findByPilotOrderByPlacing(pilot);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nem um piloto foi encontrado");
+            throw new ObjectNotFound("Nenhum piloto foi encontrado");
         }
         return list;
     }
@@ -71,7 +71,7 @@ public class RacePilotServiceImpl implements RacePilotService{
     public List<RacePilot> findByPlacing(Integer placing) {
         List<RacePilot> list = repository.findByPlacing(placing);
         if (list.isEmpty()) {
-            throw new ObjectNotFound("Nem um piloto encontrado para a colocação %s".formatted(placing));
+            throw new ObjectNotFound("Nenhum piloto encontrado para a colocação %s".formatted(placing));
         }
         return list;
     }

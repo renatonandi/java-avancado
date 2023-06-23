@@ -41,7 +41,7 @@ public class PilotServiceTest extends BaseTest{
     }
     
     @Test
-    @DisplayName("Teste buscar pista por id inexistente")
+    @DisplayName("Teste buscar piloto por id inexistente")
     @Sql({ "classpath:/resources/sqls/equipe.sql" })
     @Sql({ "classpath:/resources/sqls/pais.sql" })
     @Sql({ "classpath:/resources/sqls/piloto.sql" })
@@ -72,7 +72,7 @@ public class PilotServiceTest extends BaseTest{
     @DisplayName("Teste inserir piloto")
     @Sql({ "classpath:/resources/sqls/equipe.sql" })
     @Sql({ "classpath:/resources/sqls/pais.sql" })
-    void insertPistaTest() {
+    void insertPilotTest() {
         Pilot pilot = new Pilot(null, "Piloto", countryService.findById(1), teamService.findById(1));
         service.insert(pilot);
         pilot = service.findById(1);
@@ -87,7 +87,7 @@ public class PilotServiceTest extends BaseTest{
     @Sql({ "classpath:/resources/sqls/equipe.sql" })
     @Sql({ "classpath:/resources/sqls/pais.sql" })
     @Sql({ "classpath:/resources/sqls/piloto.sql" })
-    void removePilotoTest() {
+    void removePilotTest() {
         service.delete(1);
         List<Pilot> list = service.listAll();
         assertEquals(2, list.size());
@@ -99,7 +99,7 @@ public class PilotServiceTest extends BaseTest{
     @Sql({ "classpath:/resources/sqls/pais.sql" })
     @Sql({ "classpath:/resources/sqls/equipe.sql" })
     @Sql({ "classpath:/resources/sqls/piloto.sql" })
-    void updateUsersTest() {
+    void updatePilotTest() {
         var pilot = service.findById(1);
         assertEquals("Alonso", pilot.getName());
         var pilotNew = new Pilot(1, "PilotoAlterado", countryService.findById(1), teamService.findById(1));

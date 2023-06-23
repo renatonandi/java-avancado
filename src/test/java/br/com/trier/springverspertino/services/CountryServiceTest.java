@@ -2,7 +2,6 @@ package br.com.trier.springverspertino.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.springverspertino.BaseTest;
 import br.com.trier.springverspertino.models.Country;
-import br.com.trier.springverspertino.models.Team;
 import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;
 import br.com.trier.springverspertino.services.exceptions.ObjectNotFound;
 import jakarta.transaction.Transactional;
@@ -25,6 +23,24 @@ public class CountryServiceTest extends BaseTest{
 	@Autowired
 	CountryService countryService;
 	
+	@Test
+    @DisplayName("Teste buscar país por id")
+    @Sql({"classpath:/resources/sqls/pais.sql"})
+    void findByIdTest() {
+        var country = countryService.findById(1);
+        assertNotNull(country);
+        assertEquals(1, country.getId());
+        assertEquals("Brasil", country.getName());
+    }
+    
+    @Test
+    @DisplayName("Teste buscar país por id inexistente")
+    @Sql({"classpath:/resources/sqls/pais.sql"})
+    void findByIdInvalidTest() {
+        var exception = assertThrows(ObjectNotFound.class, () -> countryService.findById(4));
+        assertEquals("O país 4 não existe", exception.getMessage());
+    }
+    
 	@Test
     @DisplayName("Teste de listagem de todos os registros")
     @Sql({"classpath:/resources/sqls/pais.sql"})
@@ -39,24 +55,6 @@ public class CountryServiceTest extends BaseTest{
     void listAllNonExistsTest() {
         var exception = assertThrows(ObjectNotFound.class, () -> countryService.listAll());
         assertEquals("Nem um país cadastrado", exception.getMessage());
-    }
-    
-    @Test
-    @DisplayName("Teste buscar país por ID")
-    @Sql({"classpath:/resources/sqls/pais.sql"})
-    void findByIdTest() {
-        var country = countryService.findById(1);
-        assertNotNull(country);
-        assertEquals(1, country.getId());
-        assertEquals("Brasil", country.getName());
-    }
-    
-    @Test
-    @DisplayName("Teste buscar país por ID inexistente")
-    @Sql({"classpath:/resources/sqls/pais.sql"})
-    void findByIdInvalidTest() {
-        var exception = assertThrows(ObjectNotFound.class, () -> countryService.findById(4));
-        assertEquals("O país 4 não existe", exception.getMessage());
     }
     
     @Test
@@ -80,7 +78,7 @@ public class CountryServiceTest extends BaseTest{
     
     @Test
     @DisplayName("Teste inserir país")
-    void insertUserTest() {
+    void insertCountryTest() {
         Country country = new Country(null, "PaisNovo");
         countryService.insert(country);
         country = countryService.findById(1);
@@ -128,12 +126,10 @@ public class CountryServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste inserir país com nome duplicado")
     @Sql({"classpath:/resources/sqls/pais.sql"})
-    void insertUserEmailExistTest() {
+    void insertCountryWithDuplicateNameTest() {
         Country country = new Country(null, "Brasil");
         var exception = assertThrows(IntegrityViolation.class, () -> countryService.insert(country));
         assertEquals("Esse país já está cadastrado", exception.getMessage());
-        
-       
     }
 
 }

@@ -1,6 +1,5 @@
 package br.com.trier.springverspertino.services.impl;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.trier.springverspertino.models.Championship;
-import br.com.trier.springverspertino.models.Country;
 import br.com.trier.springverspertino.repositories.ChampionshipRepository;
 import br.com.trier.springverspertino.services.ChampionshipService;
 import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;

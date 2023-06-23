@@ -27,7 +27,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	CountryService countryService;
 
 	@Test
-	@DisplayName("Teste buscar pista por ID")
+	@DisplayName("Teste buscar pista por id")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	void findByIdTest() {
 		var speedway = speedwayService.findById(1);
@@ -63,7 +63,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	@Test
 	@DisplayName("Teste inserir pista")
 	@Sql({ "classpath:/resources/sqls/pais.sql" })
-	void insertPistaTest() {
+	void insertSpeedwayTest() {
 		Speedway speedway = new Speedway(null, "Pista", 5000, countryService.findById(1));
 		speedwayService.insert(speedway);
 		speedway = speedwayService.findById(1);
@@ -74,9 +74,19 @@ public class SpeedwayServiceTest extends BaseTest {
 	}
 
 	@Test
+    @DisplayName("Teste inserir pista de tamanho inválido")
+    @Sql({ "classpath:/resources/sqls/pista.sql" })
+    void insertSpeedwayInvalidSizeTest() {
+        Speedway speedway = new Speedway(null, "insert", -2000, null);
+        assertThrows(IntegrityViolation.class, () -> {
+            speedwayService.insert(speedway);
+        });
+    }
+	
+	@Test
 	@DisplayName("Teste remover pista")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
-	void removePistaTest() {
+	void deleteSpeedwayTest() {
 		speedwayService.delete(1);
 		List<Speedway> list = speedwayService.listAll();
 		assertEquals(2, list.size());
@@ -87,7 +97,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	@DisplayName("Teste alterar pista")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/pais.sql" })
-	void updateUsersTest() {
+	void updateSpeedwayTest() {
 		var speedway = speedwayService.findById(1);
 		assertEquals("Pista1", speedway.getName());
 		var speedwayNew = new Speedway(1, "Pista 500", 3000, countryService.findById(1));
@@ -107,7 +117,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Teste buscar Pista por nome errado")
+	@DisplayName("Teste buscar pista por nome errado")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	void findByNameInvalidTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> speedwayService.findByNameStartsWithIgnoreCase("w"));
@@ -115,7 +125,7 @@ public class SpeedwayServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Teste procura por tamanho entre")
+	@DisplayName("Teste buscar por tamanho entre")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	void findBySizeBetweenTest() {
 		List<Speedway> result = speedwayService.findBySizeBetween(1000, 3000);
@@ -126,36 +136,26 @@ public class SpeedwayServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Teste procura por tamanho invalido")
+	@DisplayName("Teste buscar por tamanho invalido")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
-	void findBySizeBetweenInvalidFoundTest() {
+	void findBySizeBetweenInvalidTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> speedwayService.findBySizeBetween(0, 100));
 		assertEquals("Nenhuma pista encontrada com essas medidas.", exception.getMessage());
-	}
-
-	@Test
-	@DisplayName("Teste inserir pista de tamanho inválido")
-	@Sql({ "classpath:/resources/sqls/pista.sql" })
-	void testInsertPistaInvalidSizeTest() {
-		Speedway speedway = new Speedway(null, "insert", -2000, null);
-		assertThrows(IntegrityViolation.class, () -> {
-			speedwayService.insert(speedway);
-		});
 	}
 
 	@Test
 	@DisplayName("Teste nenhuma pista cadastrada para o país")
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/pais.sql" })
-	void testFindByPaisOrderBySizeDescNoPistasCadastradas() {
+	void findByCountryOrderBySizeWithNo() {
 		assertThrows(ObjectNotFound.class, () -> speedwayService.findByCountryOrderBySize(countryService.findById(1)));
 	}
 
 	@Test
-	@DisplayName("Teste procura pistas encontradas descrecente ")
+	@DisplayName("Teste buscar pistas encontradas")
 	@Sql({ "classpath:/resources/sqls/pais.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
-	void testFindByPaisOrderBySizeDescPistasEncontradas() {
+	void findByCountryOrderBySizeTest() {
 		speedwayService.insert(new Speedway(1, "Pista4", 1000, countryService.findById(1)));
 		speedwayService.insert(new Speedway(2, "Pista5", 2000, countryService.findById(1)));
 		List<Speedway> list = speedwayService.findByCountryOrderBySize(countryService.findById(1));

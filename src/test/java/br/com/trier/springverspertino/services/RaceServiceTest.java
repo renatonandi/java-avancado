@@ -7,14 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import org.assertj.core.util.DateUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import br.com.trier.springverspertino.BaseTest;
-import br.com.trier.springverspertino.models.Pilot;
 import br.com.trier.springverspertino.models.Race;
 import br.com.trier.springverspertino.services.exceptions.IntegrityViolation;
 import br.com.trier.springverspertino.services.exceptions.ObjectNotFound;
@@ -34,7 +32,7 @@ public class RaceServiceTest extends BaseTest {
 	ChampionshipService championshipService;
 
 	@Test
-	@DisplayName("Teste buscar corrida por ID")
+	@DisplayName("Teste buscar corrida por id")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
@@ -77,7 +75,7 @@ public class RaceServiceTest extends BaseTest {
 	@DisplayName("Teste inserir corrida")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
-	void insertPistaTest() {
+	void insertRaceTest() {
 		Race race = new Race(null, DateUtils.strToZonedDateTime("01/01/1990"), championshipService.findById(1),
 				speedwayService.findById(1));
 		service.insert(race);
@@ -90,7 +88,7 @@ public class RaceServiceTest extends BaseTest {
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void updateUsersTest() {
+	void updateRaceTest() {
 		var race = service.findById(1);
 		assertEquals("Formula 1", race.getChampionship().getDescription());
 		var raceNew = new Race(1, DateUtils.strToZonedDateTime("01/01/2000"), championshipService.findById(2),
@@ -100,11 +98,11 @@ public class RaceServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Alterar corrida data não condiz com ano do campeonato")
+	@DisplayName("Teste alterar corrida data difere com ano do campeonato")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void updateInvalidDate() {
+	void updateRaceInvalidDate() {
 		Race race = new Race(1, DateUtils.strToZonedDateTime("01/10/2000"), championshipService.findById(1),
 				speedwayService.findById(2));
 		var ex = assertThrows(IntegrityViolation.class, () -> service.update(race));
@@ -112,22 +110,22 @@ public class RaceServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Alterar corrida não existente")
+	@DisplayName("Teste alterar corrida inexistente")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void updateInvalid() {
+	void updateRaceNonExist() {
 		Race race = new Race(4, ZonedDateTime.now(), championshipService.findById(1), speedwayService.findById(2));
 		var ex = assertThrows(ObjectNotFound.class, () -> service.update(race));
 		assertEquals("A corrida 4 não existe", ex.getMessage());
 	}
 
 	@Test
-	@DisplayName("Remover corrida")
+	@DisplayName("Teste remover corrida")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void removePilotoTest() {
+	void deleteRaceTest() {
 		service.delete(1);
 		List<Race> list = service.listAll();
 		assertEquals(2, list.size());
@@ -135,73 +133,73 @@ public class RaceServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("Remover corrida não existente")
+	@DisplayName("Teste remover corrida inexistente")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void deleteInvalid() {
-		var ex = assertThrows(ObjectNotFound.class, () -> service.delete(4));
-		assertEquals("A corrida 4 não existe", ex.getMessage());
+	void deleteRaceNonExistTest() {
+		var exception = assertThrows(ObjectNotFound.class, () -> service.delete(4));
+		assertEquals("A corrida 4 não existe", exception.getMessage());
 	}
 
 	@Test
-	@DisplayName("Buscar pista ordenado por data")
+	@DisplayName("Teste buscar pista ordenado por data")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByRunwayOrderByDate() {
+	void findBySpeedwayOrderByDateTest() {
 		List<Race> list = service.findBySpeedwayOrderByDate(speedwayService.findById(1));
 		assertEquals(1, list.size());
 	}
 
 	@Test
-	@DisplayName("Buscar pista ordenado por data não existe")
+	@DisplayName("Teste buscar pista ordenado por data inexistente")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByRunwayOrderByDateNonExist() {
-		var ex = assertThrows(ObjectNotFound.class, () -> service.findBySpeedwayOrderByDate(speedwayService.findById(3)));
-		assertEquals("Nenhuma corrida encontrada para pista: Pista3", ex.getMessage());
+	void findBySpeedwayOrderByDateNonExistTest() {
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findBySpeedwayOrderByDate(speedwayService.findById(3)));
+		assertEquals("Nenhuma corrida encontrada para pista: Pista3", exception.getMessage());
 	}
 	
 	@Test
-	@DisplayName("Buscar campeonato ordenado por data")
+	@DisplayName("Teste buscar campeonato ordenado por data")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByChampionshipOrderByDate() {
+	void findByChampionshipOrderByDateTest() {
 		List<Race> lista = service.findByChampionshipOrderByDate(championshipService.findById(1));
 		assertEquals(1, lista.size());
 	}
 	
 	@Test
-	@DisplayName("Buscar campeonato ordenado por data não existe")
+	@DisplayName("Teste buscar campeonato ordenado por data inexistente")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByChampionshipOrderByDateNonExist() {
-		var ex = assertThrows(ObjectNotFound.class, () -> service.findByChampionshipOrderByDate(championshipService.findById(3)));
-		assertEquals("Nenhuma corrida para o campeonato Formula E foi encontrada", ex.getMessage());
+	void findByChampionshipOrderByDateNonExistTest() {
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findByChampionshipOrderByDate(championshipService.findById(3)));
+		assertEquals("Nenhuma corrida para o campeonato Formula E foi encontrada", exception.getMessage());
 	}
 	
 	@Test
-	@DisplayName("Encontra por data entre")
+	@DisplayName("Teste busca por data entre")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByDateBetween() {
+	void findByDateBetweenTest() {
 		List<Race> list = service.findByDateBetween("01/01/1990", "01/10/1992");
 		assertEquals(1, list.size());	
 	}
 	
 	@Test
-	@DisplayName("Encontra por data entre não existe")
+	@DisplayName("Teste busca por data entre inexistente")
 	@Sql({ "classpath:/resources/sqls/campeonato.sql" })
 	@Sql({ "classpath:/resources/sqls/pista.sql" })
 	@Sql({ "classpath:/resources/sqls/corrida.sql" })
-	void findByDateBetweenNonExist() {	
-		var ex = assertThrows(ObjectNotFound.class, () -> service.findByDateBetween("01/10/1991", "01/10/1998"));
-		assertEquals("Nenhuma corrida foi encontrada para a data selecionada", ex.getMessage());
+	void findByDateBetweenNonExistTest() {	
+		var exception = assertThrows(ObjectNotFound.class, () -> service.findByDateBetween("01/10/1991", "01/10/1998"));
+		assertEquals("Nenhuma corrida foi encontrada para a data selecionada", exception.getMessage());
 	}
 
 }

@@ -18,21 +18,21 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id_piloto_corrida")
 @Entity(name = "piloto_corrida")
 public class RacePilot {
     
     @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pais")
+    @Column(name = "id_piloto_corrida")
     private Integer id;
     
     @ManyToOne
     @NotNull
     private Pilot pilot;
     
-    @ManyToOne
+    @ManyToOne 
     @NotNull
     private Race race;
     

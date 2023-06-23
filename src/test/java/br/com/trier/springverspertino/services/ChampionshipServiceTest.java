@@ -39,7 +39,7 @@ public class ChampionshipServiceTest extends BaseTest{
     }
 	
 	@Test
-	@DisplayName("Buscar por id")
+	@DisplayName("Teste buscar por id")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByIdTest() {
 		Championship champ = champService.findById(1);
@@ -50,7 +50,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Buscar por id inválido")
+	@DisplayName("Teste buscar por id inválido")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByIdInvalidTest() {	
 	    var exception = assertThrows(ObjectNotFound.class, () -> champService.findById(4));
@@ -59,7 +59,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	
 	
 	@Test
-	@DisplayName("Insert novo campeonato")
+	@DisplayName("Teste inserir novo campeonato")
 	void insertTest() {	
 		Championship champ = new Championship(null, "Campeonato", 2015);
 		champService.insert(champ);
@@ -69,7 +69,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 
 	@Test
-	@DisplayName("Insert novo campeonato com ano nulo")
+	@DisplayName("Teste inserir novo campeonato com ano nulo")
 	void insertNullYearTest() {	
 	    Championship champ = new Championship(null, "Campeonato", null);
 	    var exception = assertThrows(IntegrityViolation.class, () -> champService.insert(champ));
@@ -77,7 +77,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Update campeonato")
+	@DisplayName("Teste alterar campeonato")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void updateTest() {	
 		Championship champ = champService.findById(1);
@@ -102,7 +102,7 @@ public class ChampionshipServiceTest extends BaseTest{
     }
 	
 	@Test
-	@DisplayName("Delete campeonato que não existe")
+	@DisplayName("Teste apagar campeonato que não existe")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void deleteIdNoExistTest() {	
 	    var exception = assertThrows(ObjectNotFound.class, () -> champService.delete(4));
@@ -110,7 +110,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Procura por ano")
+	@DisplayName("Teste busca por ano")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByYearTest() {	
 		assertEquals(1, champService.findByYear(1990).size());
@@ -120,7 +120,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 
 	@Test
-	@DisplayName("Procura por ano incorreto")
+	@DisplayName("Teste busca por ano incorreto")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByYearInvalidTest() {
 	    var exception = assertThrows(IntegrityViolation.class, () -> champService.findByYear(1989));
@@ -128,7 +128,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 
 	@Test
-	@DisplayName("Procura por ano incorreto")
+	@DisplayName("Teste busca por ano incorreto")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByYearNonExistsTest() {
 	    var exception = assertThrows(ObjectNotFound.class, () -> champService.findByYear(1995));
@@ -136,7 +136,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 
 	@Test
-	@DisplayName("Procura por ano e descrição")
+	@DisplayName("Teste busca por ano e descrição")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByYearAndDescriptionTest() {
 		var champ = champService.findByYearAndDescription(1990, 2005, "for");
@@ -147,7 +147,7 @@ public class ChampionshipServiceTest extends BaseTest{
 	}
 	
 	@Test
-	@DisplayName("Procura por ano e descrição errada")
+	@DisplayName("Teste busca por ano e descrição errada")
 	@Sql({"classpath:/resources/sqls/campeonato.sql"})
 	void findByYearAndDescriptionWrongTest() {
 		var exception = assertThrows(ObjectNotFound.class, () -> champService.findByYearAndDescription(1990, 2005, "z"));
@@ -164,7 +164,7 @@ public class ChampionshipServiceTest extends BaseTest{
     }
 	
 	@Test
-    @DisplayName("Update campeonato passando ano inválido")
+    @DisplayName("Teste alterar campeonato passando ano inválido")
     @Sql({"classpath:/resources/sqls/campeonato.sql"})
     void updateInvalidYearTest() { 
         Championship champ = champService.findById(1);

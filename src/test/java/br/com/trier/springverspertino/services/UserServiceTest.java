@@ -2,10 +2,8 @@ package br.com.trier.springverspertino.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +35,6 @@ public class UserServiceTest extends BaseTest{
     @Test
     @DisplayName("Teste de listagem de todos os registros sem nem um cadastrado")
     void listAllNonExistsTest() {
-        
         var exception = assertThrows(ObjectNotFound.class, () -> userService.listAll());
         assertEquals("Nenhum usuário cadastrado", exception.getMessage());
     }

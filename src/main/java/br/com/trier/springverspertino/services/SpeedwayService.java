@@ -4,7 +4,6 @@ import java.util.List;
 
 import br.com.trier.springverspertino.models.Country;
 import br.com.trier.springverspertino.models.Speedway;
-import br.com.trier.springverspertino.models.User;
 
 public interface SpeedwayService {
     

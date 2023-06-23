@@ -23,6 +23,6 @@ public interface RaceService {
 
     List<Race> findByChampionshipOrderByDate(Championship championship);
 
-    List<Race> findByDateBetween(ZonedDateTime firstDate, ZonedDateTime lastDate);
+    List<Race> findByDateBetween(String firstDate, String lastDate);
 
 }

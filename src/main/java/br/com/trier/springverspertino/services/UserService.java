@@ -12,7 +12,7 @@ public interface UserService {
     
     List<User> listAll();
     
-    List<User> findByName(String name);
+    List<User> findByNameStarting(String name);
     
     User update(User user);
     

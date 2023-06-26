@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService{
     private UserRepository repository;
     
     private void findByEmail(User user) {
-        User busca = repository.findByEmail(user.getEmail());
-        if (busca != null && busca.getId() != user.getId()) {
+        Optional<User> busca = repository.findByEmail(user.getEmail());
+        if (busca.isPresent() && busca.get().getId() != user.getId()) {
             throw new IntegrityViolation("Esse email já está cadastrado");
         }
     }
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<User> findByName(String name) {
+    public List<User> findByNameStarting(String name) {
         List<User> list = repository.findByNameStartingWithIgnoreCase(name);
         if (list.isEmpty()) {
             throw new ObjectNotFound("Nem um nome de usuário encontrado. Não existe nome iniciado com %s".formatted(name));

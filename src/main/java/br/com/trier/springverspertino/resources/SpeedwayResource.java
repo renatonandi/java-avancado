@@ -28,26 +28,26 @@ public class SpeedwayResource {
     @Autowired
     private CountryService countryService;
     
-    @Secured({"ROLE_USER"})
+    //@Secured({"ROLE_USER"})
     @GetMapping("/{id}")
     public ResponseEntity<Speedway> findById(@PathVariable Integer id){
         return ResponseEntity.ok(service.findById(id));
     }
     
-    @Secured({"ROLE_ADMIN"})
+    //@Secured({"ROLE_ADMIN"})
     @PostMapping
     public ResponseEntity<Speedway> insert(@RequestBody Speedway speedway){
         countryService.findById(speedway.getCountry().getId());
         return ResponseEntity.ok(service.insert(speedway));
     }
 
-    @Secured({"ROLE_USER"})
+    //@Secured({"ROLE_USER"})
     @GetMapping
     public ResponseEntity<List<Speedway>> listAll(){
         return ResponseEntity.ok(service.listAll());
     }
 
-    @Secured({"ROLE_ADMIN"})
+    //@Secured({"ROLE_ADMIN"})
     @PutMapping("/{id}")
     public ResponseEntity<Speedway> update(@PathVariable Integer id, @RequestBody Speedway speedway){
         speedway.setId(id);
@@ -55,26 +55,26 @@ public class SpeedwayResource {
         return ResponseEntity.ok(service.update(speedway));
     }
     
-    @Secured({"ROLE_ADMIN"})
+    //@Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
     }
 
-    @Secured({"ROLE_USER"})
+    //@Secured({"ROLE_USER"})
     @GetMapping("/name/{name}")
     public ResponseEntity<List<Speedway>> findByName(@PathVariable String name){
         return ResponseEntity.ok(service.findByNameStartsWithIgnoreCase(name));
     }
    
-    @Secured({"ROLE_USER"})
+    //@Secured({"ROLE_USER"})
     @GetMapping("/size/{sizeIn}/{sizeFin}")
     public ResponseEntity<List<Speedway>> findBySizeBetween (@PathVariable Integer sizeIn, @PathVariable Integer sizeFin){
         return ResponseEntity.ok(service.findBySizeBetween(sizeIn, sizeFin));
     }
 
-    @Secured({"ROLE_USER"})
+    //@Secured({"ROLE_USER"})
     @GetMapping("/pais/{idPais}")
     public ResponseEntity<List<Speedway>> findByCountryOrderBySize(@PathVariable Integer idPais){
         return ResponseEntity.ok(service.findByCountryOrderBySize(countryService.findById(idPais)));

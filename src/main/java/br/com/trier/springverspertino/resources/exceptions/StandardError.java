@@ -1,6 +1,5 @@
 package br.com.trier.springverspertino.resources.exceptions;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
